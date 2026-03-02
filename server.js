@@ -2,7 +2,10 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
+
 const bookRoutes = require("./routes/books");
+const authRoutes = require("./routes/authRoutes");
+const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 
@@ -15,15 +18,11 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.error("MongoDB Error:", err.message));
 
 // Routes
-app.use("/api/books", bookRoutes);
+app.use("/api/auth", authRoutes);   // 👈 register & login
+app.use("/api/books", bookRoutes); // 👈 CRUD buku
 
-// Error handler
-app.use((err, req, res, next) => {
-  console.error(err.message);
-  res.status(err.status || 500).json({
-    error: err.message || "Internal Server Error",
-  });
-});
+// Error handler (HARUS PALING BAWAH)
+app.use(errorHandler);
 
 app.listen(5000, () => {
   console.log("Server running on http://localhost:5000");
