@@ -15,6 +15,14 @@ app.use((err, req, res, next) => {
   });
 });
 
+const mongoose = require("mongoose");
+
+mongoose.connect(
+  "mongodb://anindyabulan16_db_user:Moon1607@cluster0.raht8jf.mongodb.net/bookdb?retryWrites=true&w=majority&authSource=admin"
+)
+  .then(() => console.log("MongoDB Connected 🚀"))
+  .catch(err => console.log(err));
+
 app.listen(5000, () => {
   console.log("Server running on http://localhost:5000");
 });
